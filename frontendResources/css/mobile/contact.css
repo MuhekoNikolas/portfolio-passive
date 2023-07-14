@@ -1,0 +1,13 @@
+
+@media screen and (max-width:500px) {
+    .contactDiv{
+        width:40px;
+        height:40px;
+    }
+
+    .contactDiv i{
+        font-size:1em;
+    }
+
+
+}

@@ -1,0 +1,44 @@
+{
+    "0":{
+        "icon":"fa-brands fa-github",
+        "site":"Github",
+        "url":"https://github.com/MuhekoNikolas",
+        "iconColor":"black"
+    },
+
+    "1":{
+        "icon":"fa-brands fa-twitter",
+        "site":"Twitter",
+        "url":"https://twitter.com/muhekonikolus",
+        "iconColor":"#1DA1F2"
+    },
+
+    "2":{
+        "icon":"fa-brands fa-quora",
+        "site":"Qoura",
+        "url":"https://www.quora.com/profile/Nikolus-Muheko",
+        "iconColor":"red"
+    },
+
+    "3":{
+        "icon":"fa-brands fa-facebook",
+        "site":"Facebook",
+        "url":"https://www.facebook.com/ujikop.ujikol/",
+        "iconColor":"blue"
+    },
+
+    
+    "4":{
+        "icon":"fa-solid fa-link",
+        "site":"Replit",
+        "url":"https://replit.com/@3525Nikolas",
+        "iconColor":"orange"
+    },
+
+    "5":{
+        "icon":"fa-solid fa-link",
+        "site":"Replit",
+        "url":"https://replit.com/@joebidenbot",
+        "iconColor":"orange"
+    }
+}
