@@ -1,0 +1,30 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^18.0.6",
+    "axios": "^1.4.0",
+    "better-sqlite3": "^8.5.0",
+    "dompurify": "^3.0.5",
+    "dotenv": "^16.3.1",
+    "express-session": "^1.17.3",
+    "isomorphic-dompurify": "^1.8.0",
+    "jsdom": "^22.1.0",
+    "passport": "^0.6.0",
+    "passport-discord": "^0.1.4",
+    "passport-facebook": "^3.0.0",
+    "passport-github2": "^0.1.12",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-twitter": "^1.0.4",
+    "sqlite3": "^5.1.6",
+    "xmldom": "^0.6.0"
+  }
+}
