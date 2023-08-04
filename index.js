@@ -46,29 +46,13 @@ async function runServers(){
         console.log(`Portfolio is running on ${config.host}:${2000}`)
     })
 
-    const { stdout, stderr } = await exec('node server', {cwd:expressIframelyAppPath});
-    if(stderr){
-        console.log("An error occuring while loading iframely.")
-        process.exit()
-    }
+    // const { stdout, stderr } = await exec('node server', {cwd:expressIframelyAppPath});
+    // if(stderr){
+    //     console.log("An error occuring while loading iframely.")
+    //     process.exit()
+    // }
 }
 
 runServers()
 
-// child_process.exec(iframelyCode, {cwd:expressIframelyAppPath}, (error, stdout, stderr) => {
-//     if(error) {
-//         console.log(`error: ${error.message}`);
-//         process.exit();
-//     }
-//     if (stderr) {
-//         console.log(`stderr: ${stderr}`);
-//         process.exit();
-//     }
-
-//     app.listen(config.port, ()=>{
-//         console.log(`Portfolio is running on ${config.host}:${2000}`)
-//     })
-
-//     console.log(`stdout: ${stdout}`);
-// })
 
