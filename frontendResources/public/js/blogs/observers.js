@@ -1,88 +1,86 @@
-
-
-
-
-
+/**
+ * Initializes an IntersectionObserver for the top bar container.
+ * @param {string|null} initiatorQuery - Query selector for the initiator element.
+ * @param {number} threshold - Intersection threshold for triggering changes.
+ * @param {string|null} rootMargin - Margin around the root element.
+ */
 function initializeTopBarObserver(initiatorQuery=null, threshold=1, rootMargin=null){
-    mainWrapper = document.querySelector("#mainWrapper")
-    topBarContainerInitiator = document.querySelector(initiatorQuery || ".blogsPageTopPicksSection")
+    const mainWrapper = document.querySelector("#mainWrapper");
+    const topBarContainerInitiator = document.querySelector(initiatorQuery || ".blogsPageTopPicksSection");
+    const topBar = document.querySelector(".topBar");
 
-    topBar = document.querySelector(".topBar")
-
-    var topBarContainerObserver = new IntersectionObserver(
-        (entries)=>{
-            entries.forEach(entry=>{
-                //console.log(entry)
-                topBar.classList.toggle("changeColorToWhite", entry.isIntersecting==false)
-            })
+    // Intersection observer for the top bar container
+    const topBarContainerObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach(entry => {
+                // Toggle CSS class based on intersection state
+                topBar.classList.toggle("changeColorToWhite", entry.isIntersecting == false);
+            });
         },
         {
-            root:mainWrapper,
+            root: mainWrapper,
             rootMargin: rootMargin || "0px",
-            threshold:threshold
+            threshold: threshold
         }
-    )
+    );
 
-    topBarContainerObserver.observe(topBarContainerInitiator)
-
+    topBarContainerObserver.observe(topBarContainerInitiator);
 }
 
-
-
+/**
+ * Initializes an IntersectionObserver for the tag container.
+ * @param {string|null} initiatorQuery - Query selector for the initiator element.
+ * @param {number} threshold - Intersection threshold for triggering changes.
+ * @param {string|null} rootMargin - Margin around the root element.
+ */
 function initializeTagContainerObserver(initiatorQuery=null, threshold=1, rootMargin=null){
-    mainWrapper = document.querySelector("#mainWrapper")
-    tagsContainerInitiator = document.querySelector(initiatorQuery || ".blogsPageTopPicksSection")
+    const mainWrapper = document.querySelector("#mainWrapper");
+    const tagsContainerInitiator = document.querySelector(initiatorQuery || ".blogsPageTopPicksSection");
+    const tagsContainer = document.querySelector(".blogsPageBlogsAndTagsSection .blogTagsSection");
 
-    tagsContainer = document.querySelector(".blogsPageBlogsAndTagsSection .blogTagsSection")
+    let _lastBoundingRect = null;
 
-    _lastBoundingRect = null
-
-    window.addEventListener("resize", (event)=>{
+    // Event listener for window resize
+    window.addEventListener("resize", (event) => {
         if(!_lastBoundingRect){
-            return
+            return;
         } else {
-            tagsContainer.style.position = "relative"
-            tagsContainer.style.left = "0px"
-            _newBoundingRect = tagsContainer.getBoundingClientRect()
+            tagsContainer.style.position = "relative";
+            tagsContainer.style.left = "0px";
+            _newBoundingRect = tagsContainer.getBoundingClientRect();
 
-
-            tagsContainer.style.position=  `fixed`
-            tagsContainer.style.left=  `${_newBoundingRect.x}px`
+            tagsContainer.style.position = `fixed`;
+            tagsContainer.style.left = `${_newBoundingRect.x}px`;
         }
-    })
+    });
 
+    // Intersection observer for the tags container
+    const tagsContainerObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting == false) {
+                    _lastBoundingRect = tagsContainer.getBoundingClientRect();
 
-    var tagsContainerObserver = new IntersectionObserver(
-        (entries)=>{
-            entries.forEach(entry=>{
-                if( entry.isIntersecting==false ){
-                    _lastBoundingRect = tagsContainer.getBoundingClientRect()
-
-                    if(_lastBoundingRect.y <= 75){
-                        _lastBoundingRect.y = 85
+                    if (_lastBoundingRect.y <= 75) {
+                        _lastBoundingRect.y = 85;
                     }
 
-                    tagsContainer.style.position=  `fixed`
-                    tagsContainer.style.left=  `${_lastBoundingRect.x}px`
-                    tagsContainer.style.top=  `${_lastBoundingRect.y}px`
-
-                    //_lastBoundingRect = tagsContainer.getBoundingClientRect()
+                    tagsContainer.style.position = `fixed`;
+                    tagsContainer.style.left = `${_lastBoundingRect.x}px`;
+                    tagsContainer.style.top = `${_lastBoundingRect.y}px`;
                 } else {
-                    tagsContainer.style.position=  `relative`
-                    tagsContainer.style.left=  `0px`
-                    tagsContainer.style.top=  `0px`
+                    tagsContainer.style.position = `relative`;
+                    tagsContainer.style.left = `0px`;
+                    tagsContainer.style.top = `0px`;
                 }
-
-            })
+            });
         },
         {
-            root:mainWrapper,
+            root: mainWrapper,
             rootMargin: rootMargin || "0px",
-            threshold:threshold
+            threshold: threshold
         }
-    )
+    );
 
-    tagsContainerObserver.observe(tagsContainerInitiator)
+    tagsContainerObserver.observe(tagsContainerInitiator);
 }
-
-

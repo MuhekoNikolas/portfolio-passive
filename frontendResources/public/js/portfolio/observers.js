@@ -1,67 +1,81 @@
+/**
+ * Initializes an IntersectionObserver for skills section elements.
+ */
+function initializeSkillsObserver() {
+    // Selecting the skills container and its children (skill previews)
+    const skillsContainer = document.querySelector(".pageSkillsSectionContentsContainer");
+    const skillPreviews = skillsContainer.children;
 
-
-
-function initializeSkillsObserver(){
-    skillsContainer = document.querySelector(".pageSkillsSectionContentsContainer")
-    skillPreviews = skillsContainer.children
-
-    var skillsObserver = new IntersectionObserver(
-        (entries)=>{
-            entries.forEach(entry=>{
-                _skill = entry.target
-                _skill.classList.toggle("showSkill",entry.isIntersecting)
-            })
+    // Creating a new IntersectionObserver for skills
+    const skillsObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach(entry => {
+                const _skill = entry.target;
+                _skill.classList.toggle("showSkill", entry.isIntersecting);
+            });
         },
         {
-            root:document.querySelector("#mainWrapper"),
-            threshold:0.5
+            root: document.querySelector("#mainWrapper"), // Observing within the main wrapper
+            threshold: 0.5 // Triggering when 50% of the skill element is visible
         }
-    )
+    );
 
-    for(skill of skillPreviews){
-        skillsObserver.observe(skill)
+    // Observing each skill preview element
+    for (const skill of skillPreviews) {
+        skillsObserver.observe(skill);
     }
 }
 
-function initializeProjectsObserver(){
-    projectContainer = document.querySelector(".projectsSlideShow")
-    projectPreviews = projectContainer.children
-    var projectsObserver = new IntersectionObserver(
-        (entries)=>{
-            entries.forEach(entry=>{
-                _project = entry.target
-                _project.classList.toggle("showProject",entry.isIntersecting)
-            })
+/**
+ * Initializes an IntersectionObserver for projects section elements.
+ */
+function initializeProjectsObserver() {
+    // Selecting the project container and its children (project previews)
+    const projectContainer = document.querySelector(".projectsSlideShow");
+    const projectPreviews = projectContainer.children;
+
+    // Creating a new IntersectionObserver for projects
+    const projectsObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach(entry => {
+                const _project = entry.target;
+                _project.classList.toggle("showProject", entry.isIntersecting);
+            });
         },
         {
-            root:projectContainer,
-            threshold:0.1
+            root: projectContainer, // Observing within the project container
+            threshold: 0.1 // Triggering when 10% of the project element is visible
         }
-    )
+    );
 
-    for(project of projectPreviews){
-        projectsObserver.observe(project)
+    // Observing each project preview element
+    for (const project of projectPreviews) {
+        projectsObserver.observe(project);
     }
-
 }
 
-function initializeBioObserver(){
-    mainWrapper = document.querySelector("#mainWrapper")
-    bioContainer = document.querySelector("#pageAboutSection")
+/**
+ * Initializes an IntersectionObserver for the biography section element.
+ */
+function initializeBioObserver() {
+    // Selecting the main wrapper and the bio container
+    const mainWrapper = document.querySelector("#mainWrapper");
+    const bioContainer = document.querySelector("#pageAboutSection");
 
-    var bioContainerObserver = new IntersectionObserver(
-        (entries)=>{
-            entries.forEach(entry=>{
-                _bioCont = entry.target
-                _bioCont.classList.toggle("showBio",entry.isIntersecting)
-            })
+    // Creating a new IntersectionObserver for the bio container
+    const bioContainerObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach(entry => {
+                const _bioCont = entry.target;
+                _bioCont.classList.toggle("showBio", entry.isIntersecting);
+            });
         },
         {
-            root:mainWrapper,
-            threshold:0.3
+            root: mainWrapper, // Observing within the main wrapper
+            threshold: 0.3 // Triggering when 30% of the bio container is visible
         }
-    )
+    );
 
-    bioContainerObserver.observe(bioContainer)
-
+    // Observing the bio container element
+    bioContainerObserver.observe(bioContainer);
 }

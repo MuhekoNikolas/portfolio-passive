@@ -1,43 +1,41 @@
-
-
-
-
-
+/**
+ * Adds event listeners to the window object for handling popstate events related to login and signup forms.
+ */
 function addEventsToWindow(){
     window.addEventListener('popstate', (event) => {
         if (event.state) {
-           var  loginAndSignupFormsContainer = loginAndSignupFormsContainer || document.querySelector(".loginAndSignupFormsContainer")
+            var loginAndSignupFormsContainer = loginAndSignupFormsContainer || document.querySelector(".loginAndSignupFormsContainer");
 
             if(event.state?.showLoginFormContainer == true){
-                showLoginForm()
-                loginAndSignupFormsContainer.classList.add("visible") 
-                return
+                showLoginForm();
+                loginAndSignupFormsContainer.classList.add("visible");
+                return;
             } else if(event.state?.showSignupFormContainer == true){
-                showSignupForm()
-                loginAndSignupFormsContainer.classList.add("visible") 
-                return
+                showSignupForm();
+                loginAndSignupFormsContainer.classList.add("visible");
+                return;
             }
-
         }
     });
 }
 
-
+/**
+ * Toggles the open/close state of the side menu div.
+ */
 function manageSideMenuDiv(){
-    bioContainer = document.getElementById("navMenuContainer")
-    if(bioContainer.classList.contains("opened")){
-        bioContainer.classList.add("closed")
-        bioContainer.classList.remove("opened")
-    } else {
-        bioContainer.classList.add("opened")
-        bioContainer.classList.remove("closed")
-    }
+    const bioContainer = document.getElementById("navMenuContainer");
+    bioContainer.classList.toggle("opened");
+    bioContainer.classList.toggle("closed");
 }
 
-
+/**
+ * Changes the color theme of the website.
+ * @param {string} colorTheme - Theme name ('dark' or 'light').
+ * @returns {boolean} - Returns false if an invalid theme name is provided.
+ */
 function changeTheme(colorTheme){
-    colors = {
-        "dark":{
+    const colors = {
+        "dark": {
             "--c1": "#090927",
             "--c2": "#141339",
             "--c3": "#0C0C2B",
@@ -48,57 +46,57 @@ function changeTheme(colorTheme){
             "--darkWhite3": "#5E5E88", 
             "--pink": "#FF516D"
         },
-        "light":{
+        "light": {
             "--c1": "#3ea8da",
-            "--c2":"#258ec1",
+            "--c2": "#258ec1",
             "--c3": "#1287BD",
-            "--c4":"#1287BD",
+            "--c4": "#1287BD",
             "--white": "white",
             "--darkWhite1": "#FFF1F3",
             "--darkWhite2": "#FFF1F3",
             "--darkWhite3": "#FFF1F3", 
             "--pink": "#FF516D"
         }
+    };
+
+    if(!Object.keys(colors).includes(colorTheme)){
+        return false;
     }
 
-    if(!Object.keys(colors).includes(colorTheme)){return false}
+    const root = document.querySelector(":root");
+    const selectedTheme = colors[colorTheme];
 
-    root = document.querySelector(":root")
-
-    selectedTheme = colors[colorTheme]
-
-    for(colorProperty of Object.keys(selectedTheme)){
-        root.style.setProperty(colorProperty, selectedTheme[colorProperty])
+    for(const colorProperty of Object.keys(selectedTheme)){
+        root.style.setProperty(colorProperty, selectedTheme[colorProperty]);
     }      
-    
 }
 
+/**
+ * Toggles between dark and light themes based on current theme state.
+ */
 function manageColorTheme(){
-    colorThemeButton = document.querySelector(".topBarThemeButton")
-    currentTheme = colorThemeButton.getAttribute("data-theme")
+    const colorThemeButton = document.querySelector(".topBarThemeButton");
+    const currentTheme = colorThemeButton.getAttribute("data-theme");
+
     if(currentTheme == "dark"){
-        colorThemeButton.setAttribute("data-theme", "light")
-        changeTheme("light")
-        colorThemeButton.innerHTML = `<i class="fa-solid fa-moon"></i>`
+        colorThemeButton.setAttribute("data-theme", "light");
+        changeTheme("light");
+        colorThemeButton.innerHTML = `<i class="fa-solid fa-moon"></i>`;
     } else {
-        colorThemeButton.setAttribute("data-theme", "dark")
-        changeTheme("dark")
-        colorThemeButton.innerHTML = `<i class="fa-solid fa-sun"></i>`
+        colorThemeButton.setAttribute("data-theme", "dark");
+        changeTheme("dark");
+        colorThemeButton.innerHTML = `<i class="fa-solid fa-sun"></i>`;
     }
 }
 
-
-
-
+/**
+ * Generates preview boxes for picked blogs.
+ */
 function generatePickedBlogsPreviewBoxes(){
-    blogsPreviewsContainer = document.querySelector(".blogsPageTopPicksSection .topPicksContainer")
+    const blogsPreviewsContainer = document.querySelector(".blogsPageTopPicksSection .topPicksContainer");
 
-    for(_x = 0; _x<6; _x++){
-        if(_x < 9){
-            counterNumberPrefix = "0"
-        } else {
-            counterNumberPrefix = ""
-        }
+    for(let _x = 0; _x < 6; _x++){
+        const counterNumberPrefix = (_x < 9) ? "0" : "";
 
         blogsPreviewsContainer.innerHTML += `
             <div class="portfolioOwnerBlogElementContainer">
@@ -125,21 +123,18 @@ function generatePickedBlogsPreviewBoxes(){
 
                 </div>
             </div>
-        `
+        `;
     }
 }
 
-
-
+/**
+ * Generates preview boxes for blog containers.
+ */
 function generateBlogContainerPreviewBoxes(){
-    blogsContainersPreviewsContainer = document.querySelector(".blogsPageBlogsAndTagsSection .blogsSection")
+    const blogsContainersPreviewsContainer = document.querySelector(".blogsPageBlogsAndTagsSection .blogsSection");
 
-    for(_x = 0; _x<10; _x++){
-        if(_x < 9){
-            counterNumberPrefix = "0"
-        } else {
-            counterNumberPrefix = ""
-        }
+    for(let _x = 0; _x < 10; _x++){
+        const counterNumberPrefix = (_x < 9) ? "0" : "";
 
         blogsContainersPreviewsContainer.innerHTML += `
             <div class="blogElementContainer">
@@ -169,118 +164,124 @@ function generateBlogContainerPreviewBoxes(){
                 </div>
                 <div class="blogElementContainerBanner"></div>
             </div>
-
-        `
+        `;
     }
 }
 
-
+/**
+ * Shows the login or signup form container based on current state.
+ */
 function showLoginAndSignupFormsContainer(){
-
-    var loginAndSignupFormsContainer = loginAndSignupFormsContainer || document.querySelector(".loginAndSignupFormsContainer")
+    const loginAndSignupFormsContainer = loginAndSignupFormsContainer || document.querySelector(".loginAndSignupFormsContainer");
 
     if(loginAndSignupFormsContainer.classList.contains("showLoginFormContainer")){
-        history.replaceState({showLoginFormContainer: true}, "Login", "/blogs/login")
-        window.dispatchEvent(new PopStateEvent("popstate", { state: {showLoginFormContainer: true} }))
+        history.replaceState({showLoginFormContainer: true}, "Login", "/blogs/login");
+        window.dispatchEvent(new PopStateEvent("popstate", { state: {showLoginFormContainer: true} }));
     } else if(loginAndSignupFormsContainer.classList.contains("showSignupFormContainer")){
-        history.replaceState({showSignupFormContainer: true}, "Signup", "/blogs/signup")
-        window.dispatchEvent(new PopStateEvent("popstate", { state: {showSignupFormContainer: true} }))
+        history.replaceState({showSignupFormContainer: true}, "Signup", "/blogs/signup");
+        window.dispatchEvent(new PopStateEvent("popstate", { state: {showSignupFormContainer: true} }));
     } 
 }
 
+/**
+ * Shows the login form and updates the browser history.
+ */
 function showLoginForm(){
-    loginAndSignupFormsContainer = document.querySelector(".loginAndSignupFormsContainer")
-    loginAndSignupFormsContainer.classList.remove("showSignupFormContainer")
-    loginAndSignupFormsContainer.classList.add("showLoginFormContainer")
-    history.replaceState(null, "Login", "/blogs/login")    
+    const loginAndSignupFormsContainer = document.querySelector(".loginAndSignupFormsContainer");
+    loginAndSignupFormsContainer.classList.remove("showSignupFormContainer");
+    loginAndSignupFormsContainer.classList.add("showLoginFormContainer");
+    history.replaceState(null, "Login", "/blogs/login");    
 }
 
-function showSingupForm(){
-    loginAndSignupFormsContainer = document.querySelector(".loginAndSignupFormsContainer")
-    loginAndSignupFormsContainer.classList.remove("showLoginFormContainer")
-    loginAndSignupFormsContainer.classList.add("showSignupFormContainer")
-    history.replaceState(null, "Signup", "/blogs/signup")
+/**
+ * Shows the signup form and updates the browser history.
+ */
+function showSignupForm(){
+    const loginAndSignupFormsContainer = document.querySelector(".loginAndSignupFormsContainer");
+    loginAndSignupFormsContainer.classList.remove("showLoginFormContainer");
+    loginAndSignupFormsContainer.classList.add("showSignupFormContainer");
+    history.replaceState(null, "Signup", "/blogs/signup");
 }
 
-
-
+/**
+ * Initializes hiding event on login and signup forms container.
+ */
 function initializeHidingEventOnLoginAndSignupFormsContainer(){
-    loginAndSignupFormsContainer = document.querySelector(".loginAndSignupFormsContainer")
-    loginFormContainer = document.querySelector(".loginFormContainer")
-    signupFormContainer = document.querySelector(".signupFormContainer")
+    const loginAndSignupFormsContainer = document.querySelector(".loginAndSignupFormsContainer");
+    const loginFormContainer = document.querySelector(".loginFormContainer");
+    const signupFormContainer = document.querySelector(".signupFormContainer");
 
-    loginFormCloseButton = document.querySelector(".loginFormContainerCloseButton")
-    signupFormCloseButton = document.querySelector(".signupFormContainerCloseButton")
+    const loginFormCloseButton = document.querySelector(".loginFormContainerCloseButton");
+    const signupFormCloseButton = document.querySelector(".signupFormContainerCloseButton");
 
-    loginAndSignupFormsContainer.addEventListener("click", (event)=>{
-        if( ( event.target == loginFormCloseButton || loginFormCloseButton.contains(event.target)) || ( event.target == signupFormCloseButton || signupFormCloseButton.contains(event.target)) || event.target != loginFormContainer && event.target != signupFormContainer && loginFormContainer.contains(event.target) == false && signupFormContainer.contains(event.target) == false){
+    loginAndSignupFormsContainer.addEventListener("click", (event) => {
+        if((event.target == loginFormCloseButton || loginFormCloseButton.contains(event.target)) ||
+           (event.target == signupFormCloseButton || signupFormCloseButton.contains(event.target)) ||
+           (event.target != loginFormContainer && event.target != signupFormContainer &&
+            !loginFormContainer.contains(event.target) && !signupFormContainer.contains(event.target))){
 
-            currentUrl = new URL(window.location.href);
+            const currentUrl = new URL(window.location.href);
             currentUrl.searchParams.delete('login');
             currentUrl.searchParams.delete('signup');
 
             if(currentUrl.pathname == "/blogs/login" || currentUrl.pathname == "/blogs/signup"){
-                currentUrl.pathname = new URL(location.href).pathname
+                currentUrl.pathname = new URL(location.href).pathname;
             }
 
             history.replaceState(null, '', currentUrl);
-            loginAndSignupFormsContainer.classList.remove("visible")
+            loginAndSignupFormsContainer.classList.remove("visible");
         }
-    })
+    });
 }
 
-
+/**
+ * Manages the display of the blog search input label based on user interaction.
+ */
 function manageBlogSearchInputLabel(){
-    blogSearchInputLabel = document.querySelector(".blogSearchInputLabel")
-    blogSearchInput = document.querySelector(".blogSearchInput")
+    const blogSearchInputLabel = document.querySelector(".blogSearchInputLabel");
+    const blogSearchInput = document.querySelector(".blogSearchInput");
 
-    blogSearchInputLabel.style.display = "none"
-    blogSearchInput.select()
+    blogSearchInputLabel.style.display = "none";
+    blogSearchInput.select();
 }
 
-
-function blogsInputSearch(){
-
-    blogSearchInput = document.querySelector(".blogSearchInput")
-    if(blogSearchInput.value.length <= 0){
-        return
-    } else {
-        _searchPageUrl = new URL(`${new URL(window.location.href).origin}/blogs/search/?text=${encodeURIComponent(blogSearchInput.value)}`)
-        
-        window.location = _searchPageUrl
-    }
-}
-
+/**
+ * Initiates events for blog search input handling.
+ */
 function initiateBlogSearchInputEvents(){
-    blogSearchInput = document.querySelector(".blogSearchInput")
-    blogSearchInputLabel = document.querySelector(".blogSearchInputLabel")
+    const blogSearchInput = document.querySelector(".blogSearchInput");
+    const blogSearchInputLabel = document.querySelector(".blogSearchInputLabel");
 
     if(blogSearchInput.value.length > 0){
-        blogSearchInputLabel.style.display = "none"
+        blogSearchInputLabel.style.display = "none";
     }
 
-    blogSearchInput.addEventListener("blur", ()=>{
+    blogSearchInput.addEventListener("blur", () => {
         if(blogSearchInput.value.length <= 0){
-            blogSearchInputLabel.style.display = "flex"
+            blogSearchInputLabel.style.display = "flex";
         } else {
-            blogSearchInputLabel.style.display = "none"
+            blogSearchInputLabel.style.display = "none";
         }
-    })
+    });
 
-    blogSearchInput.addEventListener("focus", ()=>{
-        blogSearchInputLabel.style.display = "none"
-    })
+    blogSearchInput.addEventListener("focus", () => {
+        blogSearchInputLabel.style.display = "none";
+    });
 
-    blogSearchInput.addEventListener("keyup", (event)=>{
+    blogSearchInput.addEventListener("keyup", (event) => {
         if(event.keyCode == 13){
-            blogsInputSearch()
+            blogsInputSearch();
         }
-    })
+    });
 }
 
-
+/**
+ * Removes default event behavior from anchor elements with class 'noRedirect'.
+ */
 function removeDefaultEventFromAnchors(){
-    document.querySelectorAll("a.noRedirect").forEach((_x)=>{_x.addEventListener("click", (event)=>{
-        event.preventDefault()
-    })})
+    document.querySelectorAll("a.noRedirect").forEach((_x) => {
+        _x.addEventListener("click", (event) => {
+            event.preventDefault();
+        });
+    });
 }

@@ -1,20 +1,19 @@
-
-
-const fetch = require("node-fetch")
+const fetch = import("node-fetch")
 
 const { JSDOM } = require('jsdom');
 const _DOMPurify = require('dompurify');
 
+// Creating a new window instance for DOMPurify
 const window = new JSDOM('').window;
 const DOMPurify = _DOMPurify(window);
 
-
+// Exporting the module with Express app, Passport (optional), and DB parameters
 module.exports = async function(app, passport=null, DB){
 
-
+    // Route to handle editing a draft blog post
     app.post("/blogs/drafts/edit/:draftId/", await functions.getLoggedInUserMiddleware(DB), functions.userMustBeEditor, (req,resp)=>{
-        //Post request made by forms, commented it out because the user should just make an http post request to the .../edit/save route.
-        return resp.send("me")
+
+        // return resp.send("me")
         thisPageDraft = functions.getDraftById(DB, req.params.draftId)
     
         if(thisPageDraft == null){
@@ -30,6 +29,7 @@ module.exports = async function(app, passport=null, DB){
         }
     })
 
+    // Route to save content of a draft blog post
     app.post("/blogs/drafts/edit/:draftId/save", await functions.getLoggedInUserMiddleware(DB), functions.userMustBeEditorAPI, (req,resp)=>{
         content = req.body.content
 
@@ -59,7 +59,7 @@ module.exports = async function(app, passport=null, DB){
                 req.pageBlog = thisPageDraft
                 obj = {
                     success: true,
-                    message: "Saved succesfully"
+                    message: "Saved successfully"
                 }
                 resp.json(JSON.stringify(obj))
             } else {
@@ -72,7 +72,7 @@ module.exports = async function(app, passport=null, DB){
         }
     })
 
-
+    // Route to handle uploading a draft blog post as a new blog
     app.post("/blogs/drafts/edit/:draftId/upload", await functions.getLoggedInUserMiddleware(DB), functions.userMustBeEditorAPI, async (req,resp)=>{
         blogTitle = req.body.title
         blogDescription = req.body.description
@@ -118,7 +118,7 @@ module.exports = async function(app, passport=null, DB){
                 if(DOMPurify.sanitize(thisPageDraft.content, {USE_PROFILES: {html: false}}).length <= 10){
                     obj = {
                         success: false,
-                        message: "The blogs content must be longer than 10 characters."
+                        message: "The blog's content must be longer than 10 characters."
                     }
                     resp.json(JSON.stringify(obj))
                     return
@@ -130,7 +130,7 @@ module.exports = async function(app, passport=null, DB){
 
                     obj = {
                         success: true,
-                        message: "Uploaded succesfully",
+                        message: "Uploaded successfully",
                         createdBlogId: savedBlog.blog_url_id
                     }
                     resp.json(JSON.stringify(obj))
@@ -146,10 +146,9 @@ module.exports = async function(app, passport=null, DB){
             console.log(err.message)
             obj = {
                 success: false,
-                message: "An error occured."
+                message: "An error occurred."
             }
             resp.json(JSON.stringify(obj))
         }
     })
-
 }

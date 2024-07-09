@@ -1,51 +1,60 @@
-
-
-
-function getPortfolioOwnerInfoAndUpdateSite(){
+/**
+ * Fetches portfolio owner information from the server and updates the site accordingly.
+ */
+function getPortfolioOwnerInfoAndUpdateSite() {
     fetch("/api/portfolioOwner.json")
-    .then(request=>request.json())
-    .then(data=>{
-        document.querySelectorAll(".portfolioOwnerName").forEach(portfolioOwnerNameContainer=>{
-            splittedName = data.name.split(" ")
+    .then(request => request.json())
+    .then(data => {
+        // Update portfolio owner name with styled span elements
+        document.querySelectorAll(".portfolioOwnerName").forEach(portfolioOwnerNameContainer => {
+            const splittedName = data.name.split(" ");
 
-            for(_n of splittedName){
-                _firstCharEl = document.createElement("span")
-                _firstCharEl.classList.add("profileOwnerNameStyled")
-                _firstCharEl.innerText = _n[0]
-                _otherCharEl = document.createElement("span")
-                _otherCharEl.classList.add("profileOwnerNameUnstyled")
-                _otherCharEl.innerText = _n.substring(1, _n.length)
+            for (const _n of splittedName) {
+                const _firstCharEl = document.createElement("span");
+                _firstCharEl.classList.add("profileOwnerNameStyled");
+                _firstCharEl.innerText = _n[0];
 
-                portfolioOwnerNameContainer.append(_firstCharEl)
-                portfolioOwnerNameContainer.append(_otherCharEl)
-                portfolioOwnerNameContainer.append(" ")
+                const _otherCharEl = document.createElement("span");
+                _otherCharEl.classList.add("profileOwnerNameUnstyled");
+                _otherCharEl.innerText = _n.substring(1, _n.length);
+
+                portfolioOwnerNameContainer.append(_firstCharEl);
+                portfolioOwnerNameContainer.append(_otherCharEl);
+                portfolioOwnerNameContainer.append(" ");
             }
-        })
-        document.querySelectorAll(".portfolioOwnerAge").forEach(portfolioOwnerAgeContainer=>{
-            portfolioOwnerAgeContainer.innerText = data.age
-        })
+        });
 
-        document.querySelectorAll(".portfolioOwnerBio").forEach(portfolioOwnerBioContainer=>{
-            portfolioOwnerBioContainer.innerText = data.bio
-        })
+        // Update portfolio owner age
+        document.querySelectorAll(".portfolioOwnerAge").forEach(portfolioOwnerAgeContainer => {
+            portfolioOwnerAgeContainer.innerText = data.age;
+        });
 
-        professionsSelfWriter = new SelfWriter(data.professions, document.querySelector(".homeSectionCenterDivBioSkillsSpan") )
-        console.log(professionsSelfWriter)
-    })
+        // Update portfolio owner bio
+        document.querySelectorAll(".portfolioOwnerBio").forEach(portfolioOwnerBioContainer => {
+            portfolioOwnerBioContainer.innerText = data.bio;
+        });
+
+        // Initialize SelfWriter for professions
+        const professionsSelfWriter = new SelfWriter(data.professions, document.querySelector(".homeSectionCenterDivBioSkillsSpan"));
+        console.log(professionsSelfWriter); // Output SelfWriter object for debugging
+    });
 }
 
-
-function generateSkillPreviewBoxes(){
-    skillsPreviewsContainer = document.querySelector(".pageSkillsSectionContentsContainer")
+/**
+ * Generates skill preview boxes based on data fetched from the server.
+ */
+function generateSkillPreviewBoxes() {
+    const skillsPreviewsContainer = document.querySelector(".pageSkillsSectionContentsContainer");
 
     fetch("/api/skills.json")
-    .then(request=>request.json())
-    .then(data=>{
-        for(_skillInfoKey of Object.keys(data)){
-            if(_skillInfoKey == "8"){
-                break
+    .then(request => request.json())
+    .then(data => {
+        for (const _skillInfoKey of Object.keys(data)) {
+            if (_skillInfoKey == "8") {
+                break; // Break for debugging
             }
-            _skillInfo = data[_skillInfoKey]
+
+            const _skillInfo = data[_skillInfoKey];
 
             skillsPreviewsContainer.innerHTML += `
                 <div class="skillBlock">
@@ -71,23 +80,23 @@ function generateSkillPreviewBoxes(){
                         </div>
                     </div>
                 </div>
-            `
+            `;
         }
-        initializeSkillsObserver()
-    })
+        initializeSkillsObserver(); // Initialize skills observer after generating skill previews
+    });
 }
 
-
-
-
-function generateProjectsPreviewBoxes(){
-    projectsPreviewsContainer = document.querySelector(".projectsSlideShow")
+/**
+ * Generates project preview boxes based on data fetched from the server.
+ */
+function generateProjectsPreviewBoxes() {
+    const projectsPreviewsContainer = document.querySelector(".projectsSlideShow");
 
     fetch("/api/projects.json")
-    .then(request=>request.json())
-    .then(data=>{
-        for(__projectInfoKey of Object.keys(data)){
-            _projectInfo = data[__projectInfoKey]
+    .then(request => request.json())
+    .then(data => {
+        for (const __projectInfoKey of Object.keys(data)) {
+            const _projectInfo = data[__projectInfoKey];
 
             projectsPreviewsContainer.innerHTML += `
                 <div class="projectShowCase">
@@ -116,25 +125,31 @@ function generateProjectsPreviewBoxes(){
                         </a>
                     </div>
                 </div>
-            `
-            _thisProjectStackDiv = projectsPreviewsContainer.children[projectsPreviewsContainer.children.length - 1].querySelector(".projectShowCaseInfoSectionStack")
-            _projectInfo.projectStack.forEach(_stack=>{
-                _thisProjectStackDiv.innerHTML += `<h3 class="stack ${_stack.toLowerCase()}">${_stack}</h3>`
-            })
+            `;
+
+            // Update project stack information
+            const _thisProjectStackDiv = projectsPreviewsContainer.children[projectsPreviewsContainer.children.length - 1].querySelector(".projectShowCaseInfoSectionStack");
+            _projectInfo.projectStack.forEach(_stack => {
+                _thisProjectStackDiv.innerHTML += `<h3 class="stack ${_stack.toLowerCase()}">${_stack}</h3>`;
+            });
         }
-        initializeProjectsObserver()
-    })
+        initializeProjectsObserver(); // Initialize projects observer after generating project previews
+    });
 }
 
+/**
+ * Generates blog preview boxes.
+ */
+function generateBlogsPreviewBoxes() {
+    const blogsPreviewsContainer = document.querySelector(".pageBlogsSection .contentsContainer");
 
-function generateBlogsPreviewBoxes(){
-    blogsPreviewsContainer = document.querySelector(".pageBlogsSection .contentsContainer")
+    for (let _x = 0; _x < 6; _x++) {
+        let counterNumberPrefix;
 
-    for(_x = 0; _x<6; _x++){
-        if(_x < 9){
-            counterNumberPrefix = "0"
+        if (_x < 9) {
+            counterNumberPrefix = "0";
         } else {
-            counterNumberPrefix = ""
+            counterNumberPrefix = "";
         }
 
         blogsPreviewsContainer.innerHTML += `
@@ -162,22 +177,21 @@ function generateBlogsPreviewBoxes(){
 
                 </div>
             </div>
-        `
+        `;
     }
-
-
 }
 
-
-
-function generateContactsPreviewBoxes(){
-    contactsPreviewsContainer = document.querySelector(".pageContactsSection.pageSection .contentsContainer")
+/**
+ * Generates contact preview boxes based on data fetched from the server.
+ */
+function generateContactsPreviewBoxes() {
+    const contactsPreviewsContainer = document.querySelector(".pageContactsSection.pageSection .contentsContainer");
 
     fetch("/api/contacts.json")
-    .then(request=>request.json())
-    .then(data=>{
-        for(_contactInfoKey of Object.keys(data)){
-            _contactInfo = data[_contactInfoKey]
+    .then(request => request.json())
+    .then(data => {
+        for (const _contactInfoKey of Object.keys(data)) {
+            const _contactInfo = data[_contactInfoKey];
 
             contactsPreviewsContainer.innerHTML += `
             <div class="pageContactObjectDiv">
@@ -191,38 +205,48 @@ function generateContactsPreviewBoxes(){
                     ${_contactInfo.username}
                 </h4>
             </div>
-            `            
+            `;
         }
-    })
+    });
 }
 
+/**
+ * Toggles the visibility of the bio container.
+ */
+function manageBioDiv() {
+    const bioContainer = document.getElementById("bioContainer");
 
-
-function manageBioDiv(){
-    bioContainer = document.getElementById("bioContainer")
-    if(bioContainer.classList.contains("opened")){
-        bioContainer.classList.add("closed")
-        bioContainer.classList.remove("opened")
+    if (bioContainer.classList.contains("opened")) {
+        bioContainer.classList.add("closed");
+        bioContainer.classList.remove("opened");
     } else {
-        bioContainer.classList.add("opened")
-        bioContainer.classList.remove("closed")
+        bioContainer.classList.add("opened");
+        bioContainer.classList.remove("closed");
     }
 }
 
-function manageSideMenuDiv(){
-    bioContainer = document.getElementById("navMenuContainer")
-    if(bioContainer.classList.contains("opened")){
-        bioContainer.classList.add("closed")
-        bioContainer.classList.remove("opened")
+/**
+ * Toggles the visibility of the side menu container.
+ */
+function manageSideMenuDiv() {
+    const navMenuContainer = document.getElementById("navMenuContainer");
+
+    if (navMenuContainer.classList.contains("opened")) {
+        navMenuContainer.classList.add("closed");
+        navMenuContainer.classList.remove("opened");
     } else {
-        bioContainer.classList.add("opened")
-        bioContainer.classList.remove("closed")
+        navMenuContainer.classList.add("opened");
+        navMenuContainer.classList.remove("closed");
     }
 }
 
-function changeTheme(colorTheme){
-    colors = {
-        "dark":{
+/**
+ * Changes the color theme of the site.
+ * @param {string} colorTheme - The color theme to apply ('dark' or 'light').
+ */
+function changeTheme(colorTheme) {
+    const colors = {
+        "dark": {
             "--c1": "#090927",
             "--c2": "#141339",
             "--c3": "#0C0C2B",
@@ -230,44 +254,48 @@ function changeTheme(colorTheme){
             "--white": "#FFF1F3",
             "--darkWhite1": "#8787AC",
             "--darkWhite2": "#636288",
-            "--darkWhite3": "#5E5E88", 
+            "--darkWhite3": "#5E5E88",
             "--pink": "#FF516D"
         },
-        "light":{
+        "light": {
             "--c1": "#3ea8da",
-            "--c2":"#258ec1",
+            "--c2": "#258ec1",
             "--c3": "#1287BD",
-            "--c4":"#1287BD",
+            "--c4": "#1287BD",
             "--white": "white",
             "--darkWhite1": "#FFF1F3",
             "--darkWhite2": "#FFF1F3",
-            "--darkWhite3": "#FFF1F3", 
+            "--darkWhite3": "#FFF1F3",
             "--pink": "#FF516D"
         }
+    };
+
+    if (!Object.keys(colors).includes(colorTheme)) {
+        return false; // Break for debugging
     }
 
-    if(!Object.keys(colors).includes(colorTheme)){return false}
+    const root = document.querySelector(":root");
+    const selectedTheme = colors[colorTheme];
 
-    root = document.querySelector(":root")
-
-    selectedTheme = colors[colorTheme]
-
-    for(colorProperty of Object.keys(selectedTheme)){
-        root.style.setProperty(colorProperty, selectedTheme[colorProperty])
-    }      
-    
+    for (const colorProperty of Object.keys(selectedTheme)) {
+        root.style.setProperty(colorProperty, selectedTheme[colorProperty]);
+    }
 }
 
-function manageColorTheme(){
-    colorThemeButton = document.querySelector(".topBarThemeButton")
-    currentTheme = colorThemeButton.getAttribute("data-theme")
-    if(currentTheme == "dark"){
-        colorThemeButton.setAttribute("data-theme", "light")
-        changeTheme("light")
-        colorThemeButton.innerHTML = `<i class="fa-solid fa-moon"></i>`
+/**
+ * Toggles between dark and light themes and updates the theme button icon.
+ */
+function manageColorTheme() {
+    const colorThemeButton = document.querySelector(".topBarThemeButton");
+    const currentTheme = colorThemeButton.getAttribute("data-theme");
+
+    if (currentTheme === "dark") {
+        colorThemeButton.setAttribute("data-theme", "light");
+        changeTheme("light");
+        colorThemeButton.innerHTML = `<i class="fa-solid fa-moon"></i>`;
     } else {
-        colorThemeButton.setAttribute("data-theme", "dark")
-        changeTheme("dark")
-        colorThemeButton.innerHTML = `<i class="fa-solid fa-sun"></i>`
+        colorThemeButton.setAttribute("data-theme", "dark");
+        changeTheme("dark");
+        colorThemeButton.innerHTML = `<i class="fa-solid fa-sun"></i>`;
     }
 }

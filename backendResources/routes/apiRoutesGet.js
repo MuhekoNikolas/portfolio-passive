@@ -1,40 +1,58 @@
-
-
 axios = require("axios")
 
-module.exports = function(app, DB){
+/**
+ * Configure API routes for the Express application.
+ * @param {object} app - The Express application.
+ * @param {object} DB - The database instance.
+ */
+module.exports = function(app, DB) {
 
-    app.get("/api/skills.json", (req,resp)=>{
+    /**
+     * Route to serve skills.json file.
+     */
+    app.get("/api/skills.json", (req, resp) => {
         resp.sendFile("skills.json", {
             root: __dirname + "/../apiResources"
         })
     })
 
-    app.get("/api/projects.json", (req,resp)=>{
+    /**
+     * Route to serve projects.json file.
+     */
+    app.get("/api/projects.json", (req, resp) => {
         resp.sendFile("projects.json", {
             root: __dirname + "/../apiResources"
         })
     })
 
-    app.get("/api/contacts.json", (req,resp)=>{
+    /**
+     * Route to serve contacts.json file.
+     */
+    app.get("/api/contacts.json", (req, resp) => {
         resp.sendFile("contacts.json", {
             root: __dirname + "/../apiResources"
         })
     })
 
-    app.get("/api/portfolioOwner.json", (req,resp)=>{
+    /**
+     * Route to serve portfolioOwner.json file.
+     */
+    app.get("/api/portfolioOwner.json", (req, resp) => {
         resp.sendFile("portfolioOwner.json", {
-            root: __dirname + "/../apiResources" 
+            root: __dirname + "/../apiResources"
         })
     })
 
-    app.get("/api/loremipsum", async (req,resp)=>{
-        try{
-            _resp = await axios.get("https://loripsum.net/api")
-            data = _resp.data         
-            resp.json({success:true, text:data})
-        } catch (err){
-            resp.json({success:false, message:"An error occured"})
+    /**
+     * Route to get lorem ipsum text from an external API.
+     */
+    app.get("/api/loremipsum", async (req, resp) => {
+        try {
+            const _resp = await axios.get("https://loripsum.net/api")
+            const data = _resp.data         
+            resp.json({ success: true, text: data })
+        } catch (err) {
+            resp.json({ success: false, message: "An error occurred" })
         }
     })
 }
